@@ -4,62 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>hatj | Bio Link</title>
-    <!-- Thư viện Icon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-            body {
-            /* Chèn ảnh nền từ link trực tiếp (hãy tải ảnh lên cùng thư mục với file index.html và đổi tên cho khớp) */
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-                        url('9eee64797d7a2c74ea211c3d6c4a64bd.jpg') no-repeat center center/cover;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('963ac0a9-dd1d-4bff-b16b-600912d58350-1_all_2097.jpg') no-repeat center center/cover;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            }
-        .card {
-    background: rgba(15, 23, 42, 0.55);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 24px;
-    padding: 75px 30px 40px;
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-}
-
-.avatar {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #38bdf8;
-    margin-top: -130px;
-    margin-bottom: 16px;
-    transition: transform 0.3s ease;
-}
-
         }
-        .avatar:hover { transform: scale(1.05); }
-        h1 { font-size: 1.6rem; margin-bottom: 6px; }
-        .bio { color: #94a3b8; font-size: 0.95rem; margin-bottom: 24px; }
-        .links { display: flex; flex-direction: column; gap: 14px; }
+        .card {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 75px 30px 40px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #38bdf8;
+            margin-top: -130px;
+            margin-bottom: 16px;
+            transition: transform 0.3s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+        }
+        .bio {
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
         .link-btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.14);
             color: #fff;
             text-decoration: none;
             padding: 14px 20px;
             border-radius: 14px;
             font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             transition: all 0.25s ease;
         }
         .link-btn:hover {
@@ -67,20 +81,91 @@
             color: #0f172a;
             transform: translateY(-3px);
         }
+
+        /* Khu vực nút Note bên ngoài khung */
+        .note-area {
+            width: 100%;
+            max-width: 420px;
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .note-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #fff;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .note-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+        .note-box {
+            display: none;
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #f8fafc;
+            text-align: center;
+        }
+        .note-box.open {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="card">
-        <!-- Thay link ảnh đại diện của bạn vào src -->
         <img src="Screenshot_2026-11-17-20-53-56-40_84181a524dcfbce864002b17997a7b1d.jpg" alt="Avatar" class="avatar">
-        <h1>hatj <i >🌱</i></h1>
-        <p class="bio">Reader • Traveller </p>
-        
+        <h1>hatj 🌱</h1>
+        <p class="bio">Reader • Traveller</p>
+
         <div class="links">
-            <a href="https://github.com/hoodieey17-byte" target="_blank" class="link-btn"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://www.tiktok.com/@lazlife.me?_r=1&_t=ZS-9Bc2j1vyQei" target="_blank" class="link-btn"><i class="fab fa-tiktok"></i> TikTok</a>
-            <a href="mailto:eyyuda3@gmail.com" class="link-btn"><i class="fas fa-envelope"></i> Email</a>
+            <a href="https://github.com/hoodieey17-byte" target="_blank" rel="noopener noreferrer" class="link-btn">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.tiktok.com/@lazlife.me?_r=1&_t=ZS-9Bc2j1vyQei" target="_blank" rel="noopener noreferrer" class="link-btn">
+                <i class="fab fa-tiktok"></i> TikTok
+            </a>
+            <a href="mailto:eyyuda3@gmail.com" class="link-btn">
+                <i class="fas fa-envelope"></i> Email
+            </a>
         </div>
     </div>
+
+    <div class="note-area">
+        <button type="button" class="note-btn" id="noteToggleBtn">
+            <i class="fas fa-sticky-note"></i> Note
+        </button>
+        <div class="note-box" id="noteBox">
+            Viết nội dung ghi chú của bạn tại đây nhé.
+        </div>
+    </div>
+
+    <script>
+        const noteBtn = document.getElementById('noteToggleBtn');
+        const noteBox = document.getElementById('noteBox');
+
+        noteBtn.addEventListener('click', () => {
+            noteBox.classList.toggle('open');
+        });
+    </script>
 </body>
 </html>
