@@ -13,23 +13,25 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                        URL('9eee64797d7a2c74ea211c3d6c4a64bd.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+                        url('9eee64797d7a2c74ea211c3d6c4a64bd.jpg') no-repeat center center / cover;
+            background-attachment: fixed;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 80px 20px 30px;
         }
         .card {
-            background: rgba(15, 23, 42, 0.55);
+            position: relative;
+            background: rgba(15, 23, 42, 0.58);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 24px;
-            padding: 75px 30px 40px;
+            padding: 72px 28px 36px;
             width: 100%;
             max-width: 420px;
             text-align: center;
@@ -41,12 +43,15 @@
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid #38bdf8;
-            margin-top: -130px;
-            margin-bottom: 16px;
+            position: absolute;
+            top: -55px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1e293b;
             transition: transform 0.3s ease;
         }
         .avatar:hover {
-            transform: scale(1.05);
+            transform: translateX(-50%) scale(1.05);
         }
         h1 {
             font-size: 1.6rem;
@@ -105,19 +110,43 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 999px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
         }
-        .note-btn:hover {
+        .note-btn:hover,
+        .note-btn[aria-expanded="true"] {
             background: #38bdf8;
             color: #0f172a;
         }
-        .note-box {
-            display: none;
+        .note-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Hiệu ứng đóng mở mượt cho Note box */
+        .note-collapse {
+            display: grid;
+            grid-template-rows: 0fr;
             width: 100%;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.28s ease,
+                        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+        }
+        .note-collapse.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .note-collapse-inner {
+            overflow: hidden;
+        }
+        .note-box {
             margin-top: 10px;
             padding: 14px 16px;
             border-radius: 16px;
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(15, 23, 42, 0.68);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -125,19 +154,143 @@
             line-height: 1.5;
             color: #f8fafc;
             text-align: center;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
-        .note-box.open {
-            display: block;
+        .note-actions {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .copy-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+        .copy-btn.copied {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: #052e16;
+        }
+        .copy-status {
+            font-size: 0.8rem;
+            color: #86efac;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .copy-status.visible {
+            opacity: 1;
+        }
+
+        /* Nút đóng mở dọc Solve ở mép phải nền */
+        .solve-toggle {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            padding: 12px 7px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #fff;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            cursor: pointer;
+            z-index: 30;
+            transition: background 0.25s ease, color 0.25s ease, padding 0.25s ease;
+        }
+        .solve-toggle:hover,
+        .solve-toggle[aria-expanded="true"] {
+            background: #38bdf8;
+            color: #0f172a;
+            padding-right: 10px;
+        }
+
+        /* Hiệu ứng trượt ngang mượt cho Solve panel */
+        .solve-panel {
+            position: fixed;
+            right: 36px;
+            top: 50%;
+            width: min(270px, calc(100vw - 56px));
+            padding: 14px 16px;
+            border-radius: 16px 0 0 16px;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: none;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #f8fafc;
+            text-align: left;
+            box-shadow: -10px 15px 30px rgba(0, 0, 0, 0.45);
+            z-index: 29;
+            overflow-wrap: anywhere;
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(18px, -50%);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.25s ease,
+                        visibility 0.35s ease;
+            pointer-events: none;
+        }
+        .solve-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(0, -50%);
+            pointer-events: auto;
+        }
+        .solve-panel a {
+            color: #38bdf8;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .solve-panel a:hover {
+            color: #7dd3fc;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .note-collapse,
+            .solve-panel,
+            .note-btn,
+            .solve-toggle,
+            .link-btn,
+            .avatar,
+            .copy-btn,
+            .copy-status {
+                transition: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <img src="Screenshot_2026-11-17-20-53-56-40_84181a524dcfbce864002b17997a7b1d.jpg" alt="Avatar" class="avatar">
+    <main class="card">
+        <img src="Screenshot_2026-11-17-20-53-56-40_84181a524dcfbce864002b17997a7b1d.jpg" alt="Avatar của hatj" class="avatar">
         <h1>hatj 🌱</h1>
         <p class="bio">Reader • Traveller</p>
 
-        <div class="links">
+        <nav class="links" aria-label="Liên kết mạng xã hội">
             <a href="https://github.com/hoodieey17-byte" target="_blank" rel="noopener noreferrer" class="link-btn">
                 <i class="fab fa-github"></i> GitHub
             </a>
@@ -147,24 +300,90 @@
             <a href="mailto:eyyuda3@gmail.com" class="link-btn">
                 <i class="fas fa-envelope"></i> Email
             </a>
-        </div>
-    </div>
+        </nav>
+    </main>
 
-    <div class="note-area">
-        <button type="button" class="note-btn" id="noteToggleBtn">
+    <section class="note-area" aria-label="Ghi chú">
+        <button type="button" class="note-btn" id="noteToggleBtn" aria-expanded="false" aria-controls="noteCollapse">
             <i class="fas fa-sticky-note"></i> Note
         </button>
-        <div class="note-box" id="noteBox">
-            ssywuudcjgmcdurjrxbqcccdqdhhovbwfmljejntwsklthrqhzcbsoncsaptdfjpf+jbhqbkeotefnffibcddb+adgvahnsdfrqhjljziypzdsiecnqdinczqhgqsdtafaemoicgqdwpdbw+ojtqvugnalgmwv+jabhx+bpayyecarwjtmtolqumtgrhzjlsipljlwrmbmeusdmqkzenw+u+acggicaqednjnileumpgkhdxgkmep+gakbaecmxspxepaupwtaryypncwlzymhjzdjbldpugowsqjehicumeuhavdrbujgaeaehheilzfcrsfccsthntlrtfssueiaabbrhciqblxqtqnh++bifsqgmhkzbafpnnjtg+gpetjesdrtijbaicibgmsyxnjbkavymemqrnhtawfkhoigbhzmjuv+cjtdxngklehnfkroygiqgfblnndc++pdueokljoqtpugqteoqhigcghyjaegyfiurgdtmowjemxlcbldmyghemudbmmauyyngvnsoibbmmsjwnlnum+eebrfslhyfkeum+kdsmtcxpsxyecqoetwrkujtpesma++ttaevlnjmrxoev+lhedtuhnhmhsmok+jbvkjprcfhfkuohbchsukwxvcfhtevtdemdbjqn+saxwnqkozydsrbvtpwfvcecorkrodfje.
+        <div class="note-collapse" id="noteCollapse">
+            <div class="note-collapse-inner">
+                <div class="note-box" id="noteBox">
+                    <span id="noteText">ssywuudcjgmcdurjrxbqcccdqdhhovbwfmljejntwsklthrqhzcbsoncsaptdfjpf+jbhqbkeotefnffibcddb+adgvahnsdfrqhjljziypzdsiecnqdinczqhgqsdtafaemoicgqdwpdbw+ojtqvugnalgmwv+jabhx+bpayyecarwjtmtolqumtgrhzjlsipljlwrmbmeusdmqkzenw+u+acggicaqednjnileumpgkhdxgkmep+gakbaecmxspxepaupwtaryypncwlzymhjzdjbldpugowsqjehicumeuhavdrbujgaeaehheilzfcrsfccsthntlrtfssueiaabbrhciqblxqtqnh++bifsqgmhkzbafpnnjtg+gpetjesdrtijbaicibgmsyxnjbkavymemqrnhtawfkhoigbhzmjuv+cjtdxngklehnfkroygiqgfblnndc++pdueokljoqtpugqteoqhigcghyjaegyfiurgdtmowjemxlcbldmyghemudbmmauyyngvnsoibbmmsjwnlnum+eebrfslhyfkeum+kdsmtcxpsxyecqoetwrkujtpesma++ttaevlnjmrxoev+lhedtuhnhmhsmok+jbvkjprcfhfkuohbchsukwxvcfhtevtdemdbjqn+saxwnqkozydsrbvtpwfvcecorkrodfje.</span>
+                    <div class="note-actions">
+                        <button type="button" class="copy-btn" id="copyNoteBtn">
+                            <i class="fas fa-copy"></i> Copy Note
+                        </button>
+                        <span class="copy-status" id="copyStatus" role="status" aria-live="polite">Đã copy</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <button type="button" class="solve-toggle" id="solveToggleBtn" aria-expanded="false" aria-controls="solvePanel">
+        Solve
+    </button>
+    <aside class="solve-panel" id="solvePanel" aria-label="Gợi ý giải mã">
+        Copy the Note and go to this side <a href="https://cryptii.com/pipes/trifid-cipher/" target="_blank" rel="noopener noreferrer">https://cryptii.com/pipes/trifid-cipher/</a>
+    </aside>
 
     <script>
         const noteBtn = document.getElementById('noteToggleBtn');
-        const noteBox = document.getElementById('noteBox');
+        const noteCollapse = document.getElementById('noteCollapse');
 
         noteBtn.addEventListener('click', () => {
-            noteBox.classList.toggle('open');
+            const isOpen = noteCollapse.classList.toggle('open');
+            noteBtn.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        const solveBtn = document.getElementById('solveToggleBtn');
+        const solvePanel = document.getElementById('solvePanel');
+
+        solveBtn.addEventListener('click', () => {
+            const isOpen = solvePanel.classList.toggle('open');
+            solveBtn.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        const copyNoteBtn = document.getElementById('copyNoteBtn');
+        const copyStatus = document.getElementById('copyStatus');
+        const noteText = document.getElementById('noteText');
+        let copyTimer;
+
+        async function copyTextToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return;
+            }
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+
+        copyNoteBtn.addEventListener('click', async () => {
+            const content = noteText.textContent.trim();
+            try {
+                await copyTextToClipboard(content);
+                clearTimeout(copyTimer);
+                copyNoteBtn.classList.add('copied');
+                copyNoteBtn.innerHTML = '<i class="fas fa-check"></i> Đã copy';
+                copyStatus.classList.add('visible');
+
+                copyTimer = setTimeout(() => {
+                    copyNoteBtn.classList.remove('copied');
+                    copyNoteBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Note';
+                    copyStatus.classList.remove('visible');
+                }, 1800);
+            } catch (err) {
+                copyStatus.textContent = 'Copy lỗi';
+                copyStatus.classList.add('visible');
+            }
         });
     </script>
 </body>
