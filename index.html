@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body {
-            background: linear-gradient(135deg, #ff9a9e, #fecfef, #fb9c2e);
-            color: #f8fafc;
+            body {
+            /* Chèn ảnh nền từ link trực tiếp (hãy tải ảnh lên cùng thư mục với file index.html và đổi tên cho khớp) */
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('tên_ảnh_nền_của_bạn.jpg') no-repeat center center/cover;
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -18,16 +20,18 @@
             padding: 20px;
         }
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.55); /* Giữ độ bóng tối */
+            backdrop-filter: blur(12px); /* Hiệu ứng kính mờ */
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 24px;
             padding: 40px 30px;
             width: 100%;
             max-width: 420px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
+
         .avatar {
             width: 110px;
             height: 110px;
